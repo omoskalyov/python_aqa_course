@@ -1,5 +1,4 @@
-from fibonacci import generateFibonacci
-
+from src.fibonacci.fibonacci import generateFibonacci
 
 def test_fibonacci1():
     a = 1
