@@ -4,7 +4,7 @@ Python AQA course
 This repository has implementation for tasks related to the Python AQA course.  
 All code is written on Python.
 
-The course content:
+The course content:  
 Phase 1: Python Basics  
 Phase 2: API Testing with Requests  
 Phase 3: PyTest Parallel Execution  
