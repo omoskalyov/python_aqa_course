@@ -18,7 +18,7 @@ jobs:
           name: install dependencies
           command: |
             python3 -m venv phase1/venv
-            . venv/bin/activate
+            . phase1/venv/bin/activate
             pip install -r phase1/requirements.txt
 
       - save_cache:
