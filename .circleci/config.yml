@@ -30,6 +30,7 @@ jobs:
           name: run tests
           command: |
             . phase1/venv/bin/activate
+            chmod +x phase1/src/fibonacci/fibonacci.py
             phase1/src/fibonacci/fibonacci.py
             pytest
 
