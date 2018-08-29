@@ -17,7 +17,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            python3 -m venv venv
+            python3 -m venv phase1/venv
             . venv/bin/activate
             pip install -r phase1/requirements.txt
 
@@ -29,7 +29,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
+            . phase1/venv/bin/activate
             pytest
 
       - store_artifacts:
