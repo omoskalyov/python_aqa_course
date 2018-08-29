@@ -1,14 +1,23 @@
-from src.fibonacci.fibonacci import generateFibonacci
+from src.fibonacci.fibonacci import generateFibonacci, errText
+
 
 def test_fibonacci1():
-    a = 1
-    assert generateFibonacci(1) == 1
+    expectedValue = 1
+    length = 1
+    res = generateFibonacci(length)
+    assert expectedValue == res, errText.format(res, expectedValue)
 
 
 def test_fibonacci2():
-    assert generateFibonacci(5) == 5
+    expectedValue = 5
+    length = 5
+    res = generateFibonacci(length)
+    assert expectedValue == res, errText.format(res, expectedValue)
 
 
 def test_fibonacci3():
-    assert 55 == generateFibonacci(10), "Error: the 'generateFibonacci' function returns {0}, but expected is {1}"
+    expectedValue = 55
+    length = 10
+    res = generateFibonacci(length)
+    assert expectedValue == res, errText.format(res, expectedValue)
 
