@@ -30,7 +30,7 @@ jobs:
           name: run tests
           command: |
             . phase1/venv/bin/activate
-			. phase1/src/fibonacci/fibonacci.py
+            . phase1/src/fibonacci/fibonacci.py
             pytest
 
       - store_artifacts:
