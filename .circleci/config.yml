@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.7.0
+
+    working_directory: ~/aqapython
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "phase1/requirements.txt" }}
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv phase1/venv
+            . phase1/venv/bin/activate
+            pip install -r phase1/requirements.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "phase1/requirements.txt" }}
+
+      - run:
+          name: run tests
+          command: |
+            . phase1/venv/bin/activate
+            chmod +x phase1/src/fibonacci/fibonacci.py
+            phase1/src/fibonacci/fibonacci.py
+            pytest
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
