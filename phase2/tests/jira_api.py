@@ -31,20 +31,45 @@ class ApiIssue(ApiBaseClass):
         "fields": {
             "project":
                 {
-                    "key": "$key"
+                    "key": ""
                 },
-            "summary": "$summary",
+            "summary": "",
             "issuetype": {
-                "id": "$id"
+                "id": ""
             },
+            "assignee": {
+                "name": ""
+            },
+            "priority": {
+                "name": "Low"
+            },
+
         }
     }
-
 
     def __init__(self, project_key, issuetype, summary):
         self._body["fields"]["project"]["key"] = project_key
         self._body["fields"]["issuetype"]["id"] = issuetype
         self._body["fields"]["summary"] = summary
+
+    def set_summary(self, summary):
+        self._body["fields"]["summary"] = summary
+
+    def get_summary(self):
+        return self._body["fields"]["summary"]
+
+    def set_assignee(self, assignee):
+        self._body["fields"]["assignee"]["name"] = assignee
+
+    def get_assignee(self):
+        return self._body["fields"]["assignee"]["name"]
+
+    def set_priority(self, priority):
+        self._body["fields"]["priority"]["name"] = priority
+
+    def get_priority(self):
+        return self._body["fields"]["priority"]["name"]
+
 
 
 class ApiSearch(ApiBaseClass):
