@@ -46,6 +46,28 @@ class ApiIssue(ApiBaseClass):
         self._body["fields"]["issuetype"]["id"] = issuetype
         self._body["fields"]["summary"] = summary
 
+
+class ApiSearch(ApiBaseClass):
+
+    endpoint_url = ApiBaseClass.JIRA_HOST_URL + "/rest/api/2/search"
+
+    _body = {
+        "jql": "jql",
+        "startAt": 0,
+        "maxResults": 0,
+        "fields": [
+            "summary",
+            "status",
+            "assignee"
+        ]
+    }
+
+    def __init__(self, jql, max_results):
+        self._body["jql"] = jql
+        self._body["maxResults"] = max_results
+
+
+
     # def get_body(self):
     #     return self._body
 
