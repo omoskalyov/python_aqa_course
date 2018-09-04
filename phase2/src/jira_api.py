@@ -1,5 +1,3 @@
-# import json
-
 class ApiBaseClass():
     JIRA_HOST_URL = "http://jira.hillel.it:8080"
 
@@ -15,16 +13,12 @@ class ApiSession(ApiBaseClass):
         "password": "$password"
     }
 
-    def __init__(self, username, password):
+    def __init__(self, username = "", password = ""):
         self._body["username"] = username
         self._body["password"] = password
 
-    # def get_body(self):
-    #     return self._body
-
 
 class ApiIssue(ApiBaseClass):
-
     endpoint_url = ApiBaseClass.JIRA_HOST_URL + "/rest/api/2/issue"
 
     _body = {
@@ -71,9 +65,7 @@ class ApiIssue(ApiBaseClass):
         return self._body["fields"]["priority"]["name"]
 
 
-
 class ApiSearch(ApiBaseClass):
-
     endpoint_url = ApiBaseClass.JIRA_HOST_URL + "/rest/api/2/search"
 
     _body = {
@@ -90,32 +82,3 @@ class ApiSearch(ApiBaseClass):
     def __init__(self, jql, max_results):
         self._body["jql"] = jql
         self._body["maxResults"] = max_results
-
-
-
-    # def get_body(self):
-    #     return self._body
-
-
-
-    # _body = {
-    #     "fields": {
-    #         "project":
-    #             {
-    #                 "key": "$key"
-    #             },
-    #         "summary": "$summary",
-    #         "description": "$description",
-    #         "assignee": {
-    #             "name": "$assignee"
-    #         },
-    #         "issuetype": {
-    #             "id": "$id"
-    #         },
-    #         "priority": {
-    #             "name": "$priority"
-    #         }
-    #     }
-    # }
-
-

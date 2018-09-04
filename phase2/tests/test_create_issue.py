@@ -1,112 +1,54 @@
-
-import pytest
-import requests
-import base64
 from http import HTTPStatus
 
-from phase2.tests.common import get_time_stamp
-from phase2.tests.jira_api import ApiSession, ApiIssue
+from src.common import get_time_stamp
+from src.jira_api import ApiIssue
 
-USERNAME = 'Oleg_Moskalyov'
-DECODED_PASSWORD = base64.b64decode(b'MzI3Njg=').decode('utf-8')
-PROJECT_KEY = "AQAPYTHON"
-BUG_ISSUE_TYPE_KEY = "10107"
-
-# url = 'http://jira.hillel.it:8080/rest/auth/1/session'
+from src.constants import *
 
 
-def test_create_issue():
-
-    # login
-    api_session = ApiSession(USERNAME, DECODED_PASSWORD)
-    r = requests.post(api_session.endpoint_url, json=api_session.get_body())
-    assert HTTPStatus.OK == r.status_code
+def test_create_issue(create_issue_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
 
     # create issue
-    s = requests.session()
-    s.cookies = r.cookies
-    api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Oleg " + get_time_stamp())
+    summary = "Oleg " + get_time_stamp()
+    api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, summary)
     r = s.post(api_issue.endpoint_url, json=api_issue.get_body())
     assert HTTPStatus.CREATED == r.status_code
-    issue_id = r.json()["id"]
+    created_issues.append(r.json()["id"])
 
-    # delete created issue
-    r = s.delete(api_issue.endpoint_url + "/" + issue_id)
-
-    # logout
-    r = s.delete(api_session.endpoint_url)
-
-
-def test_create_issue_with_missing_required_fields():
-
-    # login
-    api_session = ApiSession(USERNAME, DECODED_PASSWORD)
-    r = requests.post(api_session.endpoint_url, json=api_session.get_body())
+    # validate the issue is really created
+    r = s.get(api_issue.endpoint_url + "/" + created_issues[0])
     assert HTTPStatus.OK == r.status_code
+    assert summary == r.json()["fields"]["summary"]
 
-    # create issue
-    s = requests.session()
-    s.cookies = r.cookies
+    pass_objects_back_to_fixture(api_issue, created_issues)
+
+
+def test_create_issue_with_missing_required_fields(create_issue_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+
     api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Oleg " + get_time_stamp())
 
-    #remove a required field from body
+    # remove a required field from body
     body_missing_fields = api_issue.get_body()
     del body_missing_fields["fields"]["summary"]
 
+    # try to create issue
     r = s.post(api_issue.endpoint_url, json=api_issue.get_body())
     assert HTTPStatus.BAD_REQUEST == r.status_code
+    assert MISSING_SUMMARY_FIELD_ERROR_TEXT == r.json()["errors"]["summary"]
 
-    # logout
-    r = s.delete(api_session.endpoint_url)
+    pass_objects_back_to_fixture(api_issue, "")
 
 
-def test_create_issue_with_summary_text_longer_than_supported():
+def test_create_issue_with_summary_text_longer_than_supported(create_issue_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
 
-    # login
-    api_session = ApiSession(USERNAME, DECODED_PASSWORD)
-    r = requests.post(api_session.endpoint_url, json=api_session.get_body())
-    assert HTTPStatus.OK == r.status_code
+    api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, SUMMARY_TEXT_LONGER_THAN_SUPPORTED)
 
-    # create issue
-    s = requests.session()
-    s.cookies = r.cookies
-    api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Z"*256)
-
+    # try to create issue
     r = s.post(api_issue.endpoint_url, json=api_issue.get_body())
     assert HTTPStatus.BAD_REQUEST == r.status_code
+    assert FIELD_LENGTH_LIMIT_ERROR_TEXT == r.json()["errors"]["summary"]
 
-    # logout
-    r = s.delete(api_session.endpoint_url)
-
-
-
-
-
-#
-#
-# def test_login_incorrect_password():
-#     body = {'username': USERNAME, 'password': "incorrect"}
-#     r = requests.post(url, json=body)
-#     assert HTTPStatus.UNAUTHORIZED == r.status_code
-#
-#
-# def test_login():
-#     # print(base64.b64encode("".encode('utf-8')))
-#
-#     body = {'username': USERNAME, 'password': DECODED_PASSWORD}
-#     r = requests.post('http://jira.hillel.it:8080/rest/auth/1/session', json=body)
-#     assert HTTPStatus.OK == r.status_code
-#
-#     print(r.status_code)
-#
-#     s = requests.session()
-#     s.cookies = r.cookies
-#
-#     r = s.get('http://jira.hillel.it:8080/rest/auth/1/session', )
-#     print(r.text)
-#
-#     r = s.delete('http://jira.hillel.it:8080/rest/auth/1/session')
-#
-#     print(r)
-
-
+    pass_objects_back_to_fixture(api_issue, "")
