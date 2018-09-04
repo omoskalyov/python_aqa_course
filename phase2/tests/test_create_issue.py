@@ -6,8 +6,8 @@ from src.jira_api import ApiIssue
 from src.constants import *
 
 
-def test_create_issue(create_issue_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+def test_create_issue(jira_tests_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     # create issue
     summary = "Oleg " + get_time_stamp()
@@ -24,8 +24,8 @@ def test_create_issue(create_issue_fixture):
     pass_objects_back_to_fixture(api_issue, created_issues)
 
 
-def test_create_issue_with_missing_required_fields(create_issue_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+def test_create_issue_with_missing_required_fields(jira_tests_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Oleg " + get_time_stamp())
 
@@ -41,8 +41,8 @@ def test_create_issue_with_missing_required_fields(create_issue_fixture):
     pass_objects_back_to_fixture(api_issue, "")
 
 
-def test_create_issue_with_summary_text_longer_than_supported(create_issue_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+def test_create_issue_with_summary_text_longer_than_supported(jira_tests_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, SUMMARY_TEXT_LONGER_THAN_SUPPORTED)
 

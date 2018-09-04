@@ -6,8 +6,8 @@ from src.jira_api import ApiIssue, ApiSearch
 from src.constants import *
 
 
-def test_search_one_issue(create_issue_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+def test_search_one_issue(jira_tests_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     # create an issue
     summary = "Oleg " + get_time_stamp()
@@ -26,8 +26,8 @@ def test_search_one_issue(create_issue_fixture):
     pass_objects_back_to_fixture(api_issue, created_issues)
 
 
-def test_search_multiple_issues(create_issue_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+def test_search_multiple_issues(jira_tests_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     # create several issues
     api_issue = None
@@ -55,8 +55,8 @@ def test_search_multiple_issues(create_issue_fixture):
     pass_objects_back_to_fixture(api_issue, [x[0] for x in created_issues])
 
 
-def test_search_no_results(create_issue_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+def test_search_no_results(jira_tests_fixture):
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     # create an issue
     api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Oleg " + get_time_stamp())

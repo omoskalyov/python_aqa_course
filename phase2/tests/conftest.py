@@ -6,7 +6,7 @@ from src.constants import *
 
 
 @pytest.fixture()
-def create_issue_fixture():
+def jira_tests_fixture():
     api_issue = None
     created_issues = []
 

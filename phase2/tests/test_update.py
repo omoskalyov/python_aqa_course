@@ -5,9 +5,9 @@ from src.jira_api import ApiSession, ApiIssue, ApiSearch
 from src.constants import *
 
 
-def test_update_issue(create_issue_fixture):
+def test_update_issue(jira_tests_fixture):
 
-    api_session, s, created_issues, pass_objects_back_to_fixture = create_issue_fixture
+    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 
     # create an issue
     api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Oleg " + get_time_stamp())
