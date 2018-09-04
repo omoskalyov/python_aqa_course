@@ -32,7 +32,7 @@ jobs:
             . phase2/venv/bin/activate
             # chmod +x phase2/src/fibonacci/fibonacci.py
             # phase1/src/fibonacci/fibonacci.py
-            pytest
+            pytest phase2
 
       - store_artifacts:
           path: test-reports
