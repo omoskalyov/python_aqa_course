@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from src.common import get_time_stamp
-from src.jira_api import ApiSession, ApiIssue, ApiSearch
+from src.jira_api import ApiIssue
 from src.constants import *
 
 

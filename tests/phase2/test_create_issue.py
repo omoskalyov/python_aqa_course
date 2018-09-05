@@ -6,6 +6,7 @@ from src.jira_api import ApiIssue
 from src.constants import *
 
 
+
 def test_create_issue(jira_tests_fixture):
     api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
 

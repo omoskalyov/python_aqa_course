@@ -1,4 +1,4 @@
-from src.fibonacci.fibonacci import generateFibonacci, errText
+from src.fibonacci import generateFibonacci, errText
 
 
 def test_fibonacci1():
