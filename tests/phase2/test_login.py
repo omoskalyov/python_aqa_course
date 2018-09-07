@@ -14,10 +14,7 @@ from src.jira_api import ApiSession
                              (USERNAME, DECODED_PASSWORD, HTTPStatus.OK),
                          ]
                          )
-def test_login(username, password, expected_status_code):
+def test_login(username, password, expected_status_code, worker_id):
     api_session = ApiSession()
-    r = requests.get(api_session.endpoint_url, auth = (username, password))
+    r = requests.get(api_session.endpoint_url, auth=(username, password))
     assert expected_status_code == r.status_code
-
-
-
