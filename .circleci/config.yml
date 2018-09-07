@@ -11,28 +11,28 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "phase2/requirements.txt" }}
+          - v1-dependencies-{{ checksum "requirements.txt" }}
           - v1-dependencies-
 
       - run:
           name: install dependencies
           command: |
-            python3 -m venv phase2/venv
-            . phase2/venv/bin/activate
-            pip install -r phase2/requirements.txt
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
 
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "phase2/requirements.txt" }}
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       - run:
           name: run tests
           command: |
-            . phase2/venv/bin/activate
-            # chmod +x phase2/src/fibonacci/fibonacci.py
+            . venv/bin/activate
+            # chmod +x phase1/src/fibonacci/fibonacci.py
             # phase1/src/fibonacci/fibonacci.py
-            pytest phase2
+            pytest -n4 --reruns 2
 
       - store_artifacts:
           path: test-reports
