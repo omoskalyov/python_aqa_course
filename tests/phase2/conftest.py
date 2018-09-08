@@ -24,7 +24,7 @@ def jira_session():
 
 
 @pytest.fixture()
-def jira_tests_fixture(request, jira_session, worker_id):
+def jira_tests_fixture(request, jira_session):
     api_session, s = jira_session
 
     api_issue = ApiIssue(None, None, None)

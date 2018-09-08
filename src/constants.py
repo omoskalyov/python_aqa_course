@@ -10,5 +10,6 @@ MAX_RESULTS = MAX_ISSUES_TO_CREATE = 5
 MISSING_SUMMARY_FIELD_ERROR_TEXT = "You must specify a summary of the issue."
 FIELD_LENGTH_LIMIT_ERROR_TEXT = "Summary must be less than 255 characters."
 
+FAILED_AUTH_ERROR_MESSAGE = "Sorry, your username and password are incorrect - please try again."
 
 
