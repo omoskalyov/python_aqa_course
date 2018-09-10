@@ -12,7 +12,7 @@ class Driver:
             chrome_options = Options()
             chrome_options.add_argument("--disable-extensions")
             chrome_options.add_argument("--disable-infobars")
-            chrome_options.headless = False
+            chrome_options.headless = True
             driver = webdriver.Chrome(executable_path=self._get_driver_path(browser), chrome_options=chrome_options)
             driver.implicitly_wait(10)
             driver.maximize_window()
