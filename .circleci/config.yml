@@ -32,6 +32,7 @@ jobs:
             . venv/bin/activate
             # chmod +x phase1/src/fibonacci/fibonacci.py
             # phase1/src/fibonacci/fibonacci.py
+            chmod +x drivers/linux/chromedriver
             pytest -n4 --reruns 2
 
       - store_artifacts:
