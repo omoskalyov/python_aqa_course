@@ -4,11 +4,10 @@ from http import HTTPStatus
 from src.jira_api import ApiSession, ApiIssue
 from src.constants import *
 
+from src.browser_factory import *
 
 @pytest.fixture(scope="session", autouse=True)
 def jira_session_fixture():
-
-    #browsers = browser_factory(initBrowser)
 
     # login once per pytest session
     api_session = ApiSession()
@@ -28,16 +27,21 @@ def jira_session_fixture():
 
 
 @pytest.fixture()
-def web_tests_fixture(jira_session_fixture):
+def driver():
 
+    driver_manager = Driver()
+    driver = driver_manager.init_browser("chrome")
+    driver.get(JIRA_HOST_URL)
     # login
-    driver = browsers.initBrowser(BROWSER)
-    get_driver().get()
-
-    setLoginPage(new
-    LoginPage(getDriver()))
+    # driver = browsers.initBrowser(BROWSER)
+    # get_driver().get()
+    #
+    # setLoginPage(new
+    # LoginPage(getDriver()))
 
     yield driver
 
     # logout
+
+    driver.quit()
 

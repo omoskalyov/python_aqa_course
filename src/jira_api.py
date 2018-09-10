@@ -1,12 +1,15 @@
+from src.constants import *
+
 class ApiBaseClass():
-    JIRA_HOST_URL = "http://jira.hillel.it:8080"
+    #JIRA_HOST_URL = "http://jira.hillel.it:8080"
+    jira_host_url = JIRA_HOST_URL
 
     def get_body(self):
         return self._body
 
 
 class ApiSession(ApiBaseClass):
-    endpoint_url = ApiBaseClass.JIRA_HOST_URL + "/rest/auth/1/session"
+    endpoint_url = ApiBaseClass.jira_host_url + "/rest/auth/1/session"
 
     _body = {
         "username": "$username",
@@ -19,7 +22,7 @@ class ApiSession(ApiBaseClass):
 
 
 class ApiIssue(ApiBaseClass):
-    endpoint_url = ApiBaseClass.JIRA_HOST_URL + "/rest/api/2/issue"
+    endpoint_url = ApiBaseClass.jira_host_url + "/rest/api/2/issue"
 
     _body = {
         "fields": {
@@ -66,7 +69,7 @@ class ApiIssue(ApiBaseClass):
 
 
 class ApiSearch(ApiBaseClass):
-    endpoint_url = ApiBaseClass.JIRA_HOST_URL + "/rest/api/2/search"
+    endpoint_url = ApiBaseClass.jira_host_url + "/rest/api/2/search"
 
     _body = {
         "jql": "jql",

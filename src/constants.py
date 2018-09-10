@@ -1,5 +1,6 @@
 import base64
 
+JIRA_HOST_URL = "http://jira.hillel.it:8080"
 USERNAME = 'Oleg_Moskalyov'
 DECODED_PASSWORD = base64.b64decode(b'MzI3Njg=').decode('utf-8')
 PROJECT_KEY = "AQAPYTHON"
@@ -12,4 +13,4 @@ FIELD_LENGTH_LIMIT_ERROR_TEXT = "Summary must be less than 255 characters."
 
 FAILED_AUTH_ERROR_MESSAGE = "Sorry, your username and password are incorrect - please try again."
 
-
+SELENIUM_DEFAULT_EXPLICIT_TIMEOUT = 10
