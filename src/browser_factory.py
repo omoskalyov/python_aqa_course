@@ -36,7 +36,7 @@ class Driver:
         root_dir = sys.path[0]
 
         def chrome():
-            return os.path.join(root_dir,"drivers",os_name,"chromedriver.exe")
+            return os.path.join(root_dir,"drivers",os_name,"chromedriver"+("", ".exe")[os_name.find("win")])
 
         def firefox():
             return None
