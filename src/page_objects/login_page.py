@@ -57,7 +57,7 @@ class LoginPage(BasePage):
 
     _login_failed_err_msg_locator = (By.CSS_SELECTOR, ".aui-message.error")
 
-    _login_button_locator = (By.CSS_SELECTOR, "a.aui-nav-link.login-link")
+    _top_right_login_button_locator = (By.CSS_SELECTOR, "a.aui-nav-link.login-link")
 
 
     #def __init__(self):
@@ -83,7 +83,7 @@ class LoginPage(BasePage):
         return error_message_text in self.login_failed_err_msg.text
 
     def is_open(self):
-        return self.is_element_exists(__class__._login_button_locator)
+        return self.is_element_exists(__class__._top_right_login_button_locator)
 
 
 
