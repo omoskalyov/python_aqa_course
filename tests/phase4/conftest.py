@@ -5,6 +5,8 @@ from src.jira_api import ApiSession, ApiIssue
 from src.constants import *
 
 from src.browser_factory import *
+from src.page_objects.login_page import LoginPage
+
 
 @pytest.fixture(scope="session", autouse=True)
 def jira_session_fixture():
@@ -32,16 +34,26 @@ def driver():
     driver_manager = Driver()
     driver = driver_manager.init_browser("chrome")
     driver.get(JIRA_HOST_URL)
-    # login
-    # driver = browsers.initBrowser(BROWSER)
-    # get_driver().get()
-    #
-    # setLoginPage(new
-    # LoginPage(getDriver()))
-
     yield driver
+    driver.quit()
+
+
+@pytest.fixture()
+def web_tests_fixture():
+
+    # open jira login page
+    driver_manager = Driver()
+    driver = driver_manager.init_browser("chrome")
+    driver.get(JIRA_HOST_URL)
+
+    # login
+    login_page = LoginPage(driver)
+    main_page = login_page.login(USERNAME,DECODED_PASSWORD)
+
+    yield main_page
 
     # logout
-
+    main_page.close_create_issue_dialog_if_exists()
+    main_page.logout()
     driver.quit()
 

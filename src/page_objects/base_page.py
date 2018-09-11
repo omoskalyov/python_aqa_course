@@ -5,6 +5,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from src.constants import *
+from time import sleep
 
 class BasePage():
     def __init__(self, driver):
@@ -43,4 +44,16 @@ class BasePage():
         #     element = driver.WebDriverWait(driver, 10).until(
         #         EC.presence_of_element_located((By.ID, "myDynamicElement"))
         #     )
+
+
+    def try_command(self, command, attempts = 5, delay = 1):
+
+        for _ in range(attempts):
+            try:
+                command()
+            except:
+                sleep(delay)
+                continue
+            return
+        command()
 
