@@ -32,11 +32,15 @@ class MainPage(BasePage):
 
     _cancel_button_locator = (By.CSS_SELECTOR, "a.cancel")
 
+    _created_issue_notification_locator = (By.CSS_SELECTOR, "a.issue-created-key.issue-link")
 
     def is_open(self):
 
         return self.is_element_exists(__class__._user_profile_popup_menu_locator)
 
+    def wait_till_page_is_open(self):
+        self.wait_till_element_is_ready(__class__._user_profile_popup_menu_locator)
+        return
 
     def logout(self):
         self.user_profile_popup_menu = self._get_web_element(__class__._user_profile_popup_menu_locator)
@@ -70,6 +74,11 @@ class MainPage(BasePage):
         self.create_button.click()
 
         self.wait_till_element_disappears(__class__._create_button_locator)
+
+    def get_created_issue_id(self):
+        self.created_issue_notification = self._get_web_element(__class__._created_issue_notification_locator)
+        return self.created_issue_notification.get_attribute("data-issue-key")
+
 
     def _enter_issue_type(self, issue_type):
         self.issue_type_field = self._get_web_element(__class__._issue_type_field_locator)

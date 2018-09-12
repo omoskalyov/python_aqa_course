@@ -7,19 +7,14 @@ from src.constants import *
 from src.browser_factory import *
 from src.page_objects.login_page import LoginPage
 
-# _RUN_ONCE_FLAG = False
-
 @pytest.fixture(scope="session", autouse=True)
 def jira_session_fixture():
 
-    # global _RUN_ONCE_FLAG
-    #
-    # if _RUN_ONCE_FLAG:
-    #     raise("zzx1212")
-    #     #return
-    # _RUN_ONCE_FLAG = True
+    created_issues_list = []
 
-    # login once per pytest session
+    yield created_issues_list
+
+    # login using api
     api_session = ApiSession()
     r = requests.get(api_session.endpoint_url, auth=(USERNAME, DECODED_PASSWORD))
     assert HTTPStatus.OK == r.status_code
@@ -28,11 +23,14 @@ def jira_session_fixture():
     s = requests.session()
     s.cookies = r.cookies
 
-    yield api_session, s
+    # delete created issues
+    for issue_id in created_issues_list:
+        r = s.delete(ApiIssue.endpoint_url + "/" + issue_id)
+        assert (HTTPStatus.OK == r.status_code) or (HTTPStatus.NO_CONTENT == r.status_code)
 
     # logout once the pytest session ends
     r = s.delete(api_session.endpoint_url)
-    #assert (HTTPStatus.OK == r.status_code) or (HTTPStatus.NO_CONTENT == r.status_code)
+    assert (HTTPStatus.OK == r.status_code) or (HTTPStatus.NO_CONTENT == r.status_code)
 
 
 
@@ -47,7 +45,8 @@ def driver():
 
 
 @pytest.fixture()
-def web_tests_fixture():
+def web_tests_fixture(jira_session_fixture):
+    created_issues_list = jira_session_fixture
 
     # open jira login page
     driver_manager = Driver()
@@ -57,8 +56,9 @@ def web_tests_fixture():
     # login
     login_page = LoginPage(driver)
     main_page = login_page.login(USERNAME,DECODED_PASSWORD)
+    main_page.wait_till_page_is_open()
 
-    yield main_page
+    yield main_page, created_issues_list
 
     # logout
     main_page.close_create_issue_dialog_if_exists()

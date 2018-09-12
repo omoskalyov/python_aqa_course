@@ -23,7 +23,7 @@ def test_create_issue(web_tests_fixture):
     main_page.create_issue(project=PROJECT_KEY, issue_type = issue_type, summary=summary)
     search_issue_page = main_page.open_search_page()
     found_issues_count = search_issue_page.search_issue_by_summary(summary=summary)
-    assert found_issues_count
+    assert found_issues_count == 1
 
 
 def test_create_issue_with_missing_required_fields(web_tests_fixture):
