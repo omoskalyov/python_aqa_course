@@ -19,6 +19,11 @@ class BasePage():
             except StaleElementReferenceException as e: # repeat wait if element is stale
                 pass # do nothing
 
+    def wait_till_element_disappears(self, locator, timeout = SELENIUM_DEFAULT_EXPLICIT_TIMEOUT):
+                wait = WebDriverWait(self.driver, timeout)
+                wait.until_not(EC.presence_of_element_located((locator[0], locator[1])))
+
+
     def is_element_exists(self, locator, timeout = SELENIUM_DEFAULT_EXPLICIT_TIMEOUT, interval = 1):
 
         # if timeout >= 10:
@@ -45,12 +50,11 @@ class BasePage():
         #         EC.presence_of_element_located((By.ID, "myDynamicElement"))
         #     )
 
-
-    def try_command(self, command, attempts = 5, delay = 1):
+    def try_command(self, *args, command, attempts = 5, delay = 1):
 
         for _ in range(attempts):
             try:
-                command()
+                command(*args)
             except:
                 sleep(delay)
                 continue

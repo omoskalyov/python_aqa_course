@@ -7,9 +7,17 @@ from src.constants import *
 from src.browser_factory import *
 from src.page_objects.login_page import LoginPage
 
+# _RUN_ONCE_FLAG = False
 
 @pytest.fixture(scope="session", autouse=True)
 def jira_session_fixture():
+
+    # global _RUN_ONCE_FLAG
+    #
+    # if _RUN_ONCE_FLAG:
+    #     raise("zzx1212")
+    #     #return
+    # _RUN_ONCE_FLAG = True
 
     # login once per pytest session
     api_session = ApiSession()
@@ -24,7 +32,7 @@ def jira_session_fixture():
 
     # logout once the pytest session ends
     r = s.delete(api_session.endpoint_url)
-    assert (HTTPStatus.OK == r.status_code) or (HTTPStatus.NO_CONTENT == r.status_code)
+    #assert (HTTPStatus.OK == r.status_code) or (HTTPStatus.NO_CONTENT == r.status_code)
 
 
 

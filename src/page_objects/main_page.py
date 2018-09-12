@@ -40,7 +40,7 @@ class MainPage(BasePage):
 
     def logout(self):
         self.user_profile_popup_menu = self._get_web_element(__class__._user_profile_popup_menu_locator)
-        self.try_command(self.user_profile_popup_menu.click)
+        self.try_command(command = self.user_profile_popup_menu.click)
         #self.user_profile_popup_menu.click()
 
         self.logout_menu_item = self._get_web_element(__class__._logout_menu_item_locator)
@@ -57,16 +57,28 @@ class MainPage(BasePage):
         self.project_type_field.send_keys(project)
         self.project_type_field.send_keys(Keys.RETURN)
 
-        self.issue_type_field = self._get_web_element(__class__._issue_type_field_locator)
-        self.issue_type_field.send_keys(issue_type)
-        self.issue_type_field.send_keys(Keys.RETURN)
+        self.try_command(issue_type, command = self._enter_issue_type)
+        #self.issue_type_field = self._get_web_element(__class__._issue_type_field_locator)
+        #self.try_command(issue_type, command = self.issue_type_field.send_keys)
+        #self.issue_type_field.send_keys(Keys.RETURN)
 
-        self.summary_field = self._get_web_element(__class__._summary_edit_field_locator)
-        self.summary_field.send_keys(summary)
+        self.try_command(summary, command = self._enter_summary_field)
+        #self.summary_field = self._get_web_element(__class__._summary_edit_field_locator)
+        #self.summary_field.send_keys(summary)
 
         self.create_button = self._get_web_element(__class__._create_button_locator)
         self.create_button.click()
 
+        self.wait_till_element_disappears(__class__._create_button_locator)
+
+    def _enter_issue_type(self, issue_type):
+        self.issue_type_field = self._get_web_element(__class__._issue_type_field_locator)
+        self.issue_type_field.send_keys(issue_type)
+        self.issue_type_field.send_keys(Keys.RETURN)
+
+    def _enter_summary_field(self, summary):
+        self.summary_field = self._get_web_element(__class__._summary_edit_field_locator)
+        self.summary_field.send_keys(summary)
 
 
     def create_issue_with_missing_summary_field(self):
@@ -96,17 +108,18 @@ class MainPage(BasePage):
     def close_create_issue_dialog_if_exists(self):
         if self.is_element_exists(__class__._cancel_button_locator):
             self.cancel_button = self._get_web_element(__class__._cancel_button_locator)
-            self.cancel_button.click()
-            try:
-                wait = WebDriverWait(self.driver, SELENIUM_DEFAULT_EXPLICIT_TIMEOUT)
-                wait.until(EC.alert_is_present())
-                alert = self.driver.switch_to.alert
-                alert.accept()
-            finally:
-                pass
+            if self.cancel_button.is_displayed():
+                self.cancel_button.click()
+                try:
+                    wait = WebDriverWait(self.driver, SELENIUM_DEFAULT_EXPLICIT_TIMEOUT)
+                    wait.until(EC.alert_is_present())
+                    alert = self.driver.switch_to.alert
+                    alert.accept()
+                finally:
+                    pass
 
     def open_search_page(self):
         self.driver.get(JIRA_HOST_URL + "/issues/")
 
-        return SearchPage()
+        return SearchPage(self.driver)
 

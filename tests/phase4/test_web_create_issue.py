@@ -1,8 +1,19 @@
+import time
+
 import pytest
 
 from src.common import get_time_stamp
 from src.page_objects.login_page import LoginPage
 from src.constants import *
+
+
+# def test1(web_tests_fixture):
+#     time.sleep(10)
+#     assert True
+#
+# def test2(web_tests_fixture):
+#     time.sleep(10)
+#     assert True
 
 
 def test_create_issue(web_tests_fixture):
@@ -11,7 +22,7 @@ def test_create_issue(web_tests_fixture):
     issue_type = "Bug"
     main_page.create_issue(project=PROJECT_KEY, issue_type = issue_type, summary=summary)
     search_issue_page = main_page.open_search_page()
-    found_issues_count = search_issue_page.search_issue(summary=summary)
+    found_issues_count = search_issue_page.search_issue_by_summary(summary=summary)
     assert found_issues_count
 
 
