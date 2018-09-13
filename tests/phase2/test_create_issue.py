@@ -52,3 +52,4 @@ def test_create_issue_with_summary_text_longer_than_supported(jira_tests_fixture
     assert FIELD_LENGTH_LIMIT_ERROR_TEXT == r.json()["errors"]["summary"]
 
     pass_objects_back_to_fixture(api_issue, "")
+

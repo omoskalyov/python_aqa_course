@@ -7,9 +7,9 @@ from selenium.webdriver.chrome.options import Options
 from src.constants import *
 
 
-class Driver:
+class DriverManager:
 
-    def init_browser(self, browser):
+    def init_driver(self, browser):
         def chrome():
             chrome_options = Options()
             chrome_options.add_argument("--disable-extensions")
@@ -17,7 +17,7 @@ class Driver:
             #chrome_options.add_argument("--incognito")
             chrome_options.headless = BROWSER_HEADLESS_MODE
             driver = webdriver.Chrome(executable_path=self._get_driver_path(browser), chrome_options=chrome_options)
-            driver.implicitly_wait(10)
+            driver.implicitly_wait(SELENIUM_DEFAULT_IMPLICIT_TIMEOUT)
             driver.maximize_window()
             return driver
 
@@ -31,11 +31,9 @@ class Driver:
 
         return switcher.get(browser, None)()
 
-
     def _get_driver_path(self, browser):
 
         os_name = platform.system().lower()
-        #root_dir = os.path.dirname(sys.modules['__main__'].__file__)
         root_dir = sys.path[0]
 
         def chrome():
