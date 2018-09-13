@@ -33,7 +33,7 @@ jobs:
             # chmod +x phase1/src/fibonacci/fibonacci.py
             # phase1/src/fibonacci/fibonacci.py
             chmod +x drivers/linux/chromedriver
-            pytest -n4 --reruns 2
+            pytest -n4 --reruns 2 -v -l
 
       - store_artifacts:
           path: test-reports

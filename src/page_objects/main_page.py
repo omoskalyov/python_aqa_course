@@ -50,7 +50,7 @@ class MainPage(BasePage):
     def is_open(self):
         return self.is_element_exists(__class__._user_profile_popup_menu_locator)
 
-    def wait_till_page_is_open(self, timeout):
+    def wait_till_page_is_open(self, timeout = SELENIUM_DEFAULT_EXPLICIT_TIMEOUT):
         self.wait_till_element_is_ready(__class__._user_profile_popup_menu_locator, timeout=timeout)
         return
 
@@ -82,7 +82,7 @@ class MainPage(BasePage):
         self.create_button = self._get_web_element(__class__._create_button_locator)
         self.create_button.click()
 
-        self.wait_till_element_disappears(__class__._create_button_locator)
+        self.wait_till_element_disappears(__class__._create_button_locator, timeout = 30)
 
         return
 

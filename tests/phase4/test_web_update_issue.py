@@ -17,6 +17,7 @@ def test_update_issue(web_tests_fixture):
     main_page.open_issue_by_id(issue_id)
     main_page.open_edit_issue_dialog()
     main_page.update_issue(updated_summary, updated_priority, USERNAME)
+    main_page.open_issue_by_id(issue_id)
 
     # validate the updated issue
     assert main_page.get_issue_summary() == updated_summary
