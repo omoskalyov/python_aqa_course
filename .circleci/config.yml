@@ -20,6 +20,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            sudo apt-add-repository ppa:qameta/allure
             sudo apt-get install allure
 
       - save_cache:
