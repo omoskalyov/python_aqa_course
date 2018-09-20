@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import *
 
 from src.page_objects.base_page import BasePage
@@ -12,6 +13,7 @@ class LoginPage(BasePage):
     _login_failed_err_msg_locator = (By.CSS_SELECTOR, ".aui-message.error")
     _top_right_login_button_locator = (By.CSS_SELECTOR, "a.aui-nav-link.login-link")
 
+    @allure.step
     def login(self, username, password):
         self.user_name_edit_field = self._get_web_element(__class__._user_name_edit_field_locator)
         self.user_name_edit_field.send_keys(username)

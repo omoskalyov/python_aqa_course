@@ -20,6 +20,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            sudo apt-get install allure
 
       - save_cache:
           paths:
@@ -33,9 +34,14 @@ jobs:
             # chmod +x phase1/src/fibonacci/fibonacci.py
             # phase1/src/fibonacci/fibonacci.py
             chmod +x drivers/linux/chromedriver
-            pytest -n4 --reruns 2 -v -l
+            pytest tests/phase4/test_web_login.py -n4 --reruns 2 -v -l --alluredir=test_results
+
+      - run:
+          name: generate report
+          command: |
+            allure generate --clean test_results
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: allure-report/index.html
+          destination: allure-report
 
