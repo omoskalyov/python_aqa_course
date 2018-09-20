@@ -46,5 +46,5 @@ jobs:
             allure generate --clean test_results
 
       - store_artifacts:
-          path: allure-report/index.html
+          path: allure-report
 
