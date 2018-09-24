@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.7.0
+      - image: circleci/python:3.7.0-stretch-browsers
 
     working_directory: ~/aqapython
 
@@ -32,7 +32,8 @@ jobs:
             . venv/bin/activate
             # chmod +x phase1/src/fibonacci/fibonacci.py
             # phase1/src/fibonacci/fibonacci.py
-            pytest -n4 --reruns 2
+            chmod +x drivers/linux/chromedriver
+            pytest -n4 --reruns 2 -v -l
 
       - store_artifacts:
           path: test-reports
