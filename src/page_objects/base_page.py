@@ -1,6 +1,7 @@
 from time import sleep
 
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -9,7 +10,7 @@ from src.constants import *
 
 class BasePage():
     def __init__(self, driver):
-        self.driver = driver
+        self.driver: WebDriver = driver
 
     def wait_till_element_is_ready(self, locator, timeout=SELENIUM_DEFAULT_EXPLICIT_TIMEOUT, wait_attempts=1):
         for _ in range(wait_attempts):

@@ -26,9 +26,11 @@ class LoginPage(BasePage):
 
         return MainPage(self.driver)
 
+    @allure.step
     def is_failed_login_error_message_exists(self, error_message_text):
         self.login_failed_err_msg = self._get_web_element(__class__._login_failed_err_msg_locator)
         return error_message_text in self.login_failed_err_msg.text
 
+    @allure.step
     def is_open(self):
         return self.is_element_exists(__class__._top_right_login_button_locator)

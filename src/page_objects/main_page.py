@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import *
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -47,13 +48,16 @@ class MainPage(BasePage):
 
     _blanket_locator = (By.CSS_SELECTOR, ".aui-blanket")
 
+    @allure.step
     def is_open(self):
         return self.is_element_exists(__class__._user_profile_popup_menu_locator)
 
+    @allure.step
     def wait_till_page_is_open(self, timeout = SELENIUM_DEFAULT_EXPLICIT_TIMEOUT):
         self.wait_till_element_is_ready(__class__._user_profile_popup_menu_locator, timeout=timeout)
         return
 
+    @allure.step
     def logout(self):
         self.user_profile_popup_menu = self._get_web_element(__class__._user_profile_popup_menu_locator)
         self.try_command(command=self.user_profile_popup_menu.click)
@@ -63,6 +67,7 @@ class MainPage(BasePage):
 
         return
 
+    @allure.step
     def create_issue(self, project, issue_type, summary):
 
         if self.is_element_exists(__class__._blanket_locator):
@@ -86,6 +91,7 @@ class MainPage(BasePage):
 
         return
 
+    @allure.step
     def get_created_issue_id(self):
         self.created_issue_notification = self._get_web_element(__class__._created_issue_notification_locator)
         return self.created_issue_notification.get_attribute("data-issue-key")
@@ -114,6 +120,7 @@ class MainPage(BasePage):
         self.priority_field.send_keys(Keys.RETURN)
         return
 
+    @allure.step
     def create_issue_with_missing_summary_field(self):
         self.create_issue_main_form_button = self._get_web_element(__class__._create_issue_main_form_button_locator)
         self.create_issue_main_form_button.click()
@@ -122,6 +129,7 @@ class MainPage(BasePage):
         self.create_button.click()
         return
 
+    @allure.step
     def create_issue_with_not_supported_text_length(self):
         self.create_issue_main_form_button = self._get_web_element(__class__._create_issue_main_form_button_locator)
         self.create_issue_main_form_button.click()
@@ -133,10 +141,12 @@ class MainPage(BasePage):
         self.create_button.click()
         return
 
+    @allure.step
     def is_error_message_exists(self, error_message):
         self.error_message = self._get_web_element(__class__._error_message_locator)
         return error_message in self.error_message.text
 
+    @allure.step
     def close_create_issue_dialog_if_exists(self):
         if self.is_element_exists(__class__._cancel_button_locator):
             self.cancel_button = self._get_web_element(__class__._cancel_button_locator)
@@ -150,19 +160,23 @@ class MainPage(BasePage):
                 finally:
                     pass
 
+    @allure.step
     def open_search_page(self):
         self.driver.get(JIRA_HOST_URL + "/issues/")
         return SearchPage(self.driver)
 
+    @allure.step
     def open_issue_by_id(self, id):
         self.driver.get(JIRA_HOST_URL + "/browse/" + id)
         return
 
+    @allure.step
     def open_edit_issue_dialog(self):
         self.edit_button = self._get_web_element(__class__._edit_button_locator)
         self.edit_button.click()
         return
 
+    @allure.step
     def update_issue(self, summary, priority, assignee_name):
         self.try_command(summary, command=self._enter_summary)
         self.try_command(priority, command=self._enter_priority)
@@ -175,18 +189,22 @@ class MainPage(BasePage):
 
         return
 
+    @allure.step
     def get_issue_summary(self):
         summary_text = self._get_web_element(__class__._summary_text_locator)
         return summary_text.text
 
+    @allure.step
     def get_issue_priority(self):
         issue_priority = self._get_web_element(__class__._issue_priority_label_locator)
         return issue_priority.text
 
+    @allure.step
     def get_issue_assignee(self):
         assignee_name = self._get_web_element(__class__._assignee_label_locator)
         return assignee_name.text
 
+    @allure.step
     def close_new_issue_created_popup_if_exists(self):
         if self.is_element_exists(__class__._new_issue_popup_close_button_locator):
             self.new_issue_popup_close_button = self._get_web_element(__class__._new_issue_popup_close_button_locator)
