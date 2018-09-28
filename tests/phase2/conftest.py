@@ -27,7 +27,7 @@ def jira_session():
 def jira_tests_fixture(request, jira_session):
     api_session, s = jira_session
 
-    api_issue = ApiIssue(None, None, None)
+    api_issue = ApiIssue(None, None, None, None)
     created_issues = []
 
     def pass_objects_back_to_fixture(api_issue_param, created_issues_param):
