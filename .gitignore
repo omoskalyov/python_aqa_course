@@ -105,3 +105,9 @@ venv.bak/
 
 # PyCharm IDE settings
 .idea/
+
+# Allure binaries and reports
+allure*/
+
+# Test results
+test_results/

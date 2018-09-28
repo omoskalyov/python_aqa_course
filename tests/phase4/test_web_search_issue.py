@@ -1,7 +1,10 @@
+import pytest
+
 from src.common import get_time_stamp
 from src.constants import *
 
 
+@pytest.mark.feature_issue
 def test_search_issue(web_tests_fixture):
     main_page, created_issues_list = web_tests_fixture
     summary = 'Oleg ' + get_time_stamp()
@@ -12,6 +15,7 @@ def test_search_issue(web_tests_fixture):
     assert found_issues_count == 1
 
 
+@pytest.mark.feature_issue
 def test_search_multiple_issues(web_tests_fixture):
     main_page, created_issues_list = web_tests_fixture
 
@@ -31,6 +35,7 @@ def test_search_multiple_issues(web_tests_fixture):
     assert found_issues_count == MAX_ISSUES_TO_CREATE
 
 
+@pytest.mark.feature_issue
 def test_search_not_existing_issue(web_tests_fixture):
     main_page, created_issues_list = web_tests_fixture
     summary = 'Not existing summary 312'

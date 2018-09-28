@@ -1,7 +1,10 @@
+import pytest
+
 from src.common import get_time_stamp
 from src.constants import *
 
 
+@pytest.mark.feature_issue
 def test_update_issue(web_tests_fixture):
     main_page, created_issues_list = web_tests_fixture
 
