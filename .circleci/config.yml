@@ -39,13 +39,13 @@ jobs:
             # phase1/src/fibonacci/fibonacci.py
             chmod +x drivers/linux/chromedriver
             pytest -n4 --reruns 2 -v -l --alluredir=test_results
-            when: always
+          when: always
 
       - run:
           name: generate report
           command: |
             allure generate --clean test_results
-            when: always
+          when: always
 
       - store_artifacts:
           path: allure-report
