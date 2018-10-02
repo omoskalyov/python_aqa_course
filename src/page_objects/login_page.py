@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import *
 
 from src.page_objects.base_page import BasePage
 from src.page_objects.main_page import MainPage
+import types
 
 
 class LoginPage(BasePage):
@@ -19,6 +20,8 @@ class LoginPage(BasePage):
         self.user_name_edit_field.send_keys(username)
 
         self.user_password_edit_field = self._get_web_element(__class__._user_password_edit_field_locator)
+        if isinstance(password, types.FunctionType):
+            password = password()
         self.user_password_edit_field.send_keys(password)
 
         self.login_button = self._get_web_element(__class__._login_button_locator)

@@ -2,7 +2,7 @@ import base64
 
 JIRA_HOST_URL = "http://jira.hillel.it:8080"
 USERNAME = 'Oleg_Moskalyov'
-#DECODED_PASSWORD = base64.b64decode(b'MzI3Njg=').decode('utf-8')
+# DECODED_PASSWORD = base64.b64decode(b'MzI3Njg=').decode('utf-8')
 DECODED_PASSWORD = base64.b64decode(b'bGhrX2t1cnM=').decode('utf-8')
 PROJECT_KEY = "AQAPYTHON"
 BUG_ISSUE_TYPE_KEY = "10107"
@@ -18,3 +18,10 @@ SELENIUM_DEFAULT_IMPLICIT_TIMEOUT = 10
 SELENIUM_DEFAULT_EXPLICIT_TIMEOUT = 10
 BROWSER_HEADLESS_MODE = True
 
+
+def decoded_password():
+    return DECODED_PASSWORD
+
+
+def incorrect_password():
+    return "incorrect"

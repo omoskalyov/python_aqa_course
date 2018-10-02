@@ -1,75 +1,43 @@
 from http import HTTPStatus
 
-from src.common import get_time_stamp
 from src.jira_api import ApiIssue, ApiSearch
 
 from src.constants import *
 
 
-def test_search_one_issue(jira_tests_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
+def test_search_one_issue(jira_tests_fixture, api_issue_fixture, created_dummy_issue):
+    api_session, jira_session = jira_tests_fixture
 
-    # create an issue
-    summary = "Oleg " + get_time_stamp()
-    api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, summary)
-    r = s.post(api_issue.endpoint_url, json=api_issue.get_body())
-    assert HTTPStatus.CREATED == r.status_code
-    created_issues.append(r.json()["id"])
-
-    # search for this single issue
-    jql_query_prepared = JQL_QUERY + '"' + summary + '"'
-    api_search = ApiSearch(jql_query_prepared, 1)
-    r = s.post(api_search.endpoint_url, json=api_search.get_body())
+    # search for a single issue
+    jql_query_prepared = JQL_QUERY + '"' + created_dummy_issue.get_summary() + '"'
+    api_search = ApiSearch(jira_session, jql_query_prepared, 1)
+    r = api_search.search_issue()
     assert HTTPStatus.OK == r.status_code
-    assert summary == r.json()["issues"][0]["fields"]["summary"]
-
-    pass_objects_back_to_fixture(api_issue, created_issues)
+    assert created_dummy_issue.get_summary() == r.json()["issues"][0]["fields"]["summary"]
 
 
-def test_search_multiple_issues(jira_tests_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
-
-    # create several issues
-    api_issue = None
-    for issue_num in range(MAX_ISSUES_TO_CREATE):
-        summary = "Oleg " + get_time_stamp()
-        api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, summary)
-        r = s.post(api_issue.endpoint_url, json=api_issue.get_body())
-        assert HTTPStatus.CREATED == r.status_code
-        issue_id = r.json()["id"]
-        created_issues.append((issue_id, summary))
+def test_search_multiple_issues(jira_tests_fixture, api_issue_fixture, created_issues, created_issues_summaries):
+    api_session, jira_session = jira_tests_fixture
 
     # search for multiple issues
-    jql_search_prepared = JQL_QUERY + " OR summary ~ ".join(['"' + x[1] + '"' for x in created_issues])
-    api_search = ApiSearch(jql_search_prepared, MAX_RESULTS)
-    r = s.post(api_search.endpoint_url, json=api_search.get_body())
+    jql_search_prepared = JQL_QUERY + " OR summary ~ ".join(['"' + x + '"' for x in created_issues_summaries])
+    api_search = ApiSearch(jira_session, jql_search_prepared, MAX_RESULTS)
+    r = api_search.search_issue()
 
     # validate the expected issues found
     assert HTTPStatus.OK == r.status_code
     assert r.json()["maxResults"] == MAX_RESULTS
-    expected_summary_list = [x[1] for x in created_issues]
     actual_summary_list = [x["fields"]["summary"] for x in r.json()["issues"]]
-    for x in expected_summary_list:
+    for x in created_issues_summaries:
         assert (x in actual_summary_list) == True
 
-    pass_objects_back_to_fixture(api_issue, [x[0] for x in created_issues])
 
-
-def test_search_no_results(jira_tests_fixture):
-    api_session, s, created_issues, pass_objects_back_to_fixture = jira_tests_fixture
-
-    # create an issue
-    api_issue = ApiIssue(PROJECT_KEY, BUG_ISSUE_TYPE_KEY, "Oleg " + get_time_stamp())
-    r = s.post(api_issue.endpoint_url, json=api_issue.get_body())
-    assert HTTPStatus.CREATED == r.status_code
-    created_issues.append(r.json()["id"])
+def test_search_no_results(jira_tests_fixture, api_issue_fixture, created_dummy_issue):
+    api_session, jira_session = jira_tests_fixture
 
     # search for multiple issues
     jql_query_prepared = JQL_QUERY + "'not existing issue !@#$15243'"
-    api_search = ApiSearch(jql_query_prepared, 1)
-    r = s.post(api_search.endpoint_url, json=api_search.get_body())
+    api_search = ApiSearch(jira_session, jql_query_prepared, 1)
+    r = api_search.search_issue()
     assert HTTPStatus.OK == r.status_code
-    assert not(bool(r.json()["issues"]))
-
-    pass_objects_back_to_fixture(api_issue, created_issues)
-
+    assert not (bool(r.json()["issues"]))
