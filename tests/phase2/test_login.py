@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import pytest
-import requests
 
 from src.constants import *
 from src.jira_api import ApiSession

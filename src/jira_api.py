@@ -54,7 +54,8 @@ class ApiIssue(ApiBaseClass):
             "priority": {
                 "name": "Low"
             },
-
+            "id": "",
+            "key": "",
         }
     }
 
@@ -70,6 +71,18 @@ class ApiIssue(ApiBaseClass):
     def get_summary(self):
         return self._body["fields"]["summary"]
 
+    def set_id(self, id):
+        self._body["fields"]["id"] = id
+
+    def get_id(self):
+        return self._body["fields"]["id"]
+
+    def set_key(self, key):
+        self._body["fields"]["key"] = key
+
+    def get_key(self):
+        return self._body["fields"]["key"]
+
     def set_assignee(self, assignee):
         self._body["fields"]["assignee"]["name"] = assignee
 
@@ -83,12 +96,22 @@ class ApiIssue(ApiBaseClass):
         return self._body["fields"]["priority"]["name"]
 
     def create_issue(self):
-        return self.session.post(ApiIssue.endpoint_url, json=self.get_body())
+        _body = self.get_body()
+        if 'id' in _body["fields"]:
+            del _body["fields"]['id']
+        if 'key' in _body["fields"]:
+            del _body["fields"]['key']
+        return self.session.post(ApiIssue.endpoint_url, json=_body)
 
     def get_issue(self, issue_id):
         return self.session.get(ApiIssue.endpoint_url + "/" + issue_id)
 
     def update_issue(self, issue_id):
+        _body = self.get_body()
+        if 'id' in _body["fields"]:
+            del _body["fields"]['id']
+        if 'key' in _body["fields"]:
+            del _body["fields"]['key']
         return self.session.put(ApiIssue.endpoint_url + "/" + issue_id, json=self.get_body())
 
     def delete_issue(self, issue_id):

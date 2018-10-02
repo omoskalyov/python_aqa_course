@@ -29,4 +29,3 @@ def test_web_login_positive(driver):
     assert main_page.is_open()
     main_page.logout()
     assert login_page.is_open()
-
